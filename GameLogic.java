@@ -105,41 +105,25 @@ public  class GameLogic implements PlayableLogic {
         grid[by][bx] = grid[ay][ax];
         grid[ay][ax]=null;
 
+        isPlayer2Turn = !isPlayer2Turn;     //pass the turn
 
-        isPlayer2Turn = !isPlayer2Turn;
-        if(bx > 0 && grid[by][bx-1] != null && grid[by][bx] instanceof Pawn) {
-            if (grid[by][bx].owner != grid[by][bx - 1].owner) {
-                if(bx-2 >= 0 && grid[by][bx - 2] != null) {
+        //////////////////////////////////     Pawn Kill     ////////////////////////////////////////////////////////
+
+        //kill a pawn on the left
+        if(bx > 0 && grid[by][bx-1] != null && grid[by][bx] instanceof Pawn) {  //if the current Piece isn't a king and it's not on the left border
+            if (grid[by][bx].owner != grid[by][bx - 1].owner) {     //if the Pawn on the left is an enemy
+                if(bx-2 >= 0 && grid[by][bx - 2] != null) {     //if the enemy on the left isn't on the border and the that position isn't empty
                     if (grid[by][bx - 2].owner == grid[by][bx].owner && grid[by][bx-2] instanceof Pawn
-                            && grid[by][bx-1] instanceof Pawn) {
-                        grid[by][bx - 1] = null;
+                            && grid[by][bx-1] instanceof Pawn) {        //if the piece one the left to the enemy is an alli Pawn
+                        grid[by][bx - 1] = null;       // KILLLLLLLLLLL!!!!!!
                     }
                 }
-               if (bx<2 && grid[by][bx-1] instanceof Pawn){grid[by][bx - 1] = null;}
+               if (bx<2 && grid[by][bx-1] instanceof Pawn){grid[by][bx - 1] = null;}       //if the enemy Pawn is on the left border- KILLLLL!!!
+                if (((by == 0 && bx == 2) || (by == 10 && bx == 2)) && grid[by][bx-1] instanceof Pawn){grid[by][bx-1] = null;}  //exception for the two left corners
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //right
+        //kill a pawn on the right
         if(bx < 10 && grid[by][bx+1] != null && grid[by][bx] instanceof Pawn) {
             if (grid[by][bx].owner != grid[by][bx + 1].owner) {
                 if(bx+2 <= 10 && grid[by][bx + 2] != null) {
@@ -149,10 +133,11 @@ public  class GameLogic implements PlayableLogic {
                     }
                 }
                 if (bx>8 && grid[by][bx+1] instanceof Pawn){grid[by][bx + 1] = null;}
+                if (((by == 10 && bx == 8) || (by == 0 && bx == 8)) && grid[by][bx+1] instanceof Pawn){grid[by][bx+1] = null;}
             }
         }
 
-        //up
+        //kill down
         if(by < 10 && grid[by+1][bx] != null && grid[by][bx] instanceof Pawn) {
             if (grid[by][bx].owner != grid[by+1][bx].owner) {
                 if(by+2 <= 10 && grid[by+2][bx] != null) {
@@ -162,10 +147,11 @@ public  class GameLogic implements PlayableLogic {
                     }
                 }
                 if (by>8 && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;}
+                if (((by == 8 && bx == 10) || (by == 8 && bx == 0)) && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;}
             }
         }
 
-        //dowm
+        //kill an upper Pawn
         if(by > 0 && grid[by-1][bx] != null && grid[by][bx] instanceof Pawn) {
             if (grid[by][bx].owner != grid[by-1][bx].owner) {
                 if(by-2 >= 0 && grid[by-2][bx] != null) {
@@ -175,23 +161,10 @@ public  class GameLogic implements PlayableLogic {
                     }
                 }
                 if (by<2 && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;}
+                if (((by == 2 && bx == 10) || (by == 2 && bx == 0)) && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;}
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         return true;
     }
