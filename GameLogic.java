@@ -5,7 +5,7 @@ public  class GameLogic implements PlayableLogic {
     /**
      * moves the piece from one point to another.
      *
-     * @param a- the current position
+     * @param a- the current 
      * @param b- the destination position
      * @return True- if the move legal and succeeded,
      */
@@ -107,6 +107,91 @@ public  class GameLogic implements PlayableLogic {
 
 
         isPlayer2Turn = !isPlayer2Turn;
+        if(bx > 0 && grid[by][bx-1] != null && grid[by][bx] instanceof Pawn) {
+            if (grid[by][bx].owner != grid[by][bx - 1].owner) {
+                if(bx-2 >= 0 && grid[by][bx - 2] != null) {
+                    if (grid[by][bx - 2].owner == grid[by][bx].owner && grid[by][bx-2] instanceof Pawn
+                            && grid[by][bx-1] instanceof Pawn) {
+                        grid[by][bx - 1] = null;
+                    }
+                }
+               if (bx<2 && grid[by][bx-1] instanceof Pawn){grid[by][bx - 1] = null;}
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //right
+        if(bx < 10 && grid[by][bx+1] != null && grid[by][bx] instanceof Pawn) {
+            if (grid[by][bx].owner != grid[by][bx + 1].owner) {
+                if(bx+2 <= 10 && grid[by][bx + 2] != null) {
+                    if (grid[by][bx + 2].owner == grid[by][bx].owner && grid[by][bx+2] instanceof Pawn
+                            && grid[by][bx+1] instanceof Pawn) {
+                        grid[by][bx + 1] = null;
+                    }
+                }
+                if (bx>8 && grid[by][bx+1] instanceof Pawn){grid[by][bx + 1] = null;}
+            }
+        }
+
+        //up
+        if(by < 10 && grid[by+1][bx] != null && grid[by][bx] instanceof Pawn) {
+            if (grid[by][bx].owner != grid[by+1][bx].owner) {
+                if(by+2 <= 10 && grid[by+2][bx] != null) {
+                    if (grid[by+2][bx].owner == grid[by][bx].owner && grid[by+2][bx] instanceof Pawn
+                            && grid[by+1][bx] instanceof Pawn) {
+                        grid[by+1][bx] = null;
+                    }
+                }
+                if (by>8 && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;}
+            }
+        }
+
+        //dowm
+        if(by > 0 && grid[by-1][bx] != null && grid[by][bx] instanceof Pawn) {
+            if (grid[by][bx].owner != grid[by-1][bx].owner) {
+                if(by-2 >= 0 && grid[by-2][bx] != null) {
+                    if (grid[by-2][bx].owner == grid[by][bx].owner && grid[by-2][bx] instanceof Pawn
+                            && grid[by-1][bx] instanceof Pawn) {
+                        grid[by-1][bx] = null;
+                    }
+                }
+                if (by<2 && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;}
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         return true;
     }
@@ -201,19 +286,23 @@ public  class GameLogic implements PlayableLogic {
         //left kill
         if(bx > 0 && grid[by][bx-1] != null) {
             if (grid[by][bx].owner != grid[by][bx - 1].owner) {
-                if (grid[by][bx - 2].owner == grid[by][bx].owner || (bx-2+by) == 0) {
-                    grid[by][bx-1] = null;
+                if(bx-2 >= 0) {
+                    if (grid[by][bx - 2].owner == grid[by][bx].owner) {
+                        grid[by][bx - 1] = null;
+                    }
                 }
+                grid[by][bx - 1] = null;
+
             }
         }
-        //right kill
-        if(bx < 10 && grid[by][bx+1] != null) {
-            if (grid[by][bx].owner != grid[by][bx + 1].owner) {
-                if (grid[by][bx + 2].owner == grid[by][bx].owner) {
-                    grid[by][bx+1] = null;
-                }
-            }
-        }
+//        //right kill
+//        if(bx < 10 && grid[by][bx+1] != null) {
+//            if (grid[by][bx].owner != grid[by][bx + 1].owner) {
+//                if (grid[by][bx + 2].owner == grid[by][bx].owner) {
+//                    grid[by][bx+1] = null;
+//                }
+//            }
+//        }
 
 
 
