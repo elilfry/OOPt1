@@ -124,46 +124,49 @@ public  class GameLogic implements PlayableLogic {
         }
 
         //kill a pawn on the right
-        if(bx < 10 && grid[by][bx+1] != null && grid[by][bx] instanceof Pawn) {
-            if (grid[by][bx].owner != grid[by][bx + 1].owner) {
-                if(bx+2 <= 10 && grid[by][bx + 2] != null) {
+        if(bx < 10 && grid[by][bx+1] != null && grid[by][bx] instanceof Pawn) { //if the current Piece isn't a king and it's not on the right border
+            if (grid[by][bx].owner != grid[by][bx + 1].owner) {  //if the Pawn on the right is an enemy
+                if(bx+2 <= 10 && grid[by][bx + 2] != null) { //if the enemy on the right isn't on the border and the that position isn't empty
                     if (grid[by][bx + 2].owner == grid[by][bx].owner && grid[by][bx+2] instanceof Pawn
-                            && grid[by][bx+1] instanceof Pawn) {
-                        grid[by][bx + 1] = null;
+                            && grid[by][bx+1] instanceof Pawn) { //if the piece one the right to the enemy is an alli Pawn
+                        grid[by][bx + 1] = null; // KILLLLLLLLLLL!!!!!!
                     }
                 }
-                if (bx>8 && grid[by][bx+1] instanceof Pawn){grid[by][bx + 1] = null;}
-                if (((by == 10 && bx == 8) || (by == 0 && bx == 8)) && grid[by][bx+1] instanceof Pawn){grid[by][bx+1] = null;}
+                if (bx>8 && grid[by][bx+1] instanceof Pawn){grid[by][bx + 1] = null;}  //if the enemy Pawn is on the right border- KILLLLL!!!
+                if (((by == 10 && bx == 8) || (by == 0 && bx == 8)) && grid[by][bx+1] instanceof Pawn){grid[by][bx+1] = null;} //exception for the two right corners (?)
             }
         }
 
         //kill down
-        if(by < 10 && grid[by+1][bx] != null && grid[by][bx] instanceof Pawn) {
-            if (grid[by][bx].owner != grid[by+1][bx].owner) {
-                if(by+2 <= 10 && grid[by+2][bx] != null) {
+        if(by < 10 && grid[by+1][bx] != null && grid[by][bx] instanceof Pawn) { //if the current Piece isn't a king and it's not on the bottom border
+            if (grid[by][bx].owner != grid[by+1][bx].owner) { //if the Pawn from below is an enemy
+                if(by+2 <= 10 && grid[by+2][bx] != null) { //if the enemy from below isn't on the border and the that position isn't empty
                     if (grid[by+2][bx].owner == grid[by][bx].owner && grid[by+2][bx] instanceof Pawn
-                            && grid[by+1][bx] instanceof Pawn) {
-                        grid[by+1][bx] = null;
+                            && grid[by+1][bx] instanceof Pawn) { //if the piece one below to the enemy is an alli Pawn
+                        grid[by+1][bx] = null; // KILLLLLLLLLLL!!!!!!
                     }
                 }
-                if (by>8 && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;}
-                if (((by == 8 && bx == 10) || (by == 8 && bx == 0)) && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;}
+                if (by>8 && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;} //if the enemy Pawn is on the bottom border- KILLLLL!!!
+                if (((by == 8 && bx == 10) || (by == 8 && bx == 0)) && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;} //exception for the two bottom corners (?)
             }
         }
 
         //kill an upper Pawn
-        if(by > 0 && grid[by-1][bx] != null && grid[by][bx] instanceof Pawn) {
-            if (grid[by][bx].owner != grid[by-1][bx].owner) {
-                if(by-2 >= 0 && grid[by-2][bx] != null) {
+        if(by > 0 && grid[by-1][bx] != null && grid[by][bx] instanceof Pawn) { //if the current Piece isn't a king and it's not on the top border
+            if (grid[by][bx].owner != grid[by-1][bx].owner) { //if the Pawn from above is an enemy
+                if(by-2 >= 0 && grid[by-2][bx] != null) { //if the enemy from above isn't on the border and the that position isn't empty
                     if (grid[by-2][bx].owner == grid[by][bx].owner && grid[by-2][bx] instanceof Pawn
-                            && grid[by-1][bx] instanceof Pawn) {
-                        grid[by-1][bx] = null;
+                            && grid[by-1][bx] instanceof Pawn) { //if the piece one above to the enemy is an alli Pawn
+                        grid[by-1][bx] = null; // KILLLLLLLLLLL!!!!!!
                     }
                 }
-                if (by<2 && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;}
-                if (((by == 2 && bx == 10) || (by == 2 && bx == 0)) && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;}
+                if (by<2 && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;} //if the enemy Pawn is on the top border- KILLLLL!!!
+                if (((by == 2 && bx == 10) || (by == 2 && bx == 0)) && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;} //exception for the two top corners (?)
             }
         }
+
+
+
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         return true;
@@ -189,6 +192,20 @@ public  class GameLogic implements PlayableLogic {
 
     @Override
     public boolean isGameFinished() {
+
+        //if the king is surrounded by 4 pawns
+
+
+        //if the king is at the edge with 3 pawns
+
+
+
+        // if the king is at the corner
+        if(grid[0][0] instanceof King || grid[0][10] instanceof King ||grid[10][0] instanceof King || grid[10][10] instanceof King ){
+            return true;
+        }
+        // if one of the players has no other pieces
+
         return false;
     }
 
@@ -251,46 +268,4 @@ public  class GameLogic implements PlayableLogic {
         return boardSize;
     }
 
-    private void eat(Position b){
-       int bx = b.getX(), by = b.getY();
-
-        //regular 1 from each side (and multi kills)
-
-        //left kill
-        if(bx > 0 && grid[by][bx-1] != null) {
-            if (grid[by][bx].owner != grid[by][bx - 1].owner) {
-                if(bx-2 >= 0) {
-                    if (grid[by][bx - 2].owner == grid[by][bx].owner) {
-                        grid[by][bx - 1] = null;
-                    }
-                }
-                grid[by][bx - 1] = null;
-
-            }
-        }
-//        //right kill
-//        if(bx < 10 && grid[by][bx+1] != null) {
-//            if (grid[by][bx].owner != grid[by][bx + 1].owner) {
-//                if (grid[by][bx + 2].owner == grid[by][bx].owner) {
-//                    grid[by][bx+1] = null;
-//                }
-//            }
-//        }
-
-
-
-        //moving to a position between 2 enemy pieces
-
-        //eat with 1 pawn and the edge
-
-        //the king is unarmed
-
-        //capture the king
-
-
-
-
-
-
-    }
 }

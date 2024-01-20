@@ -5,7 +5,6 @@ public class ConcretePlayer implements Player{
     private boolean playerOne;
     private  int wins = 0;
 
-    //con.
 
     public ConcretePlayer( boolean playerOne) {
          this.playerOne=playerOne;
