@@ -19,7 +19,10 @@ public  class GameLogic implements PlayableLogic {
      ConcretePlayer player1= new ConcretePlayer(true);
      ConcretePlayer player2 = new ConcretePlayer(false);
 
+    private int numOfReds;
 
+    private int yKing;
+    private int xKing;
 
     public GameLogic(){
         reset();
@@ -193,18 +196,72 @@ public  class GameLogic implements PlayableLogic {
     @Override
     public boolean isGameFinished() {
 
+        // if one of the red player has no other pieces and find the king
+        for (int i=0; i <= 10; i++) {    //check if the matrix has no red pawns
+            for (int j = 0; j <= 10; j++) {
+                if (grid[i][j] != null && grid[i][j].owner == player2) {
+                    numOfReds++;
+                }
+                if (grid[i][j] instanceof King) {
+                    yKing = i;
+                    xKing = j;
+                }
+            }
+            if (numOfReds == 0) {
+                return true;
+            }   //if player2 ran out of Pawns
+        }
+
         //if the king is surrounded by 4 pawns
+        if (xKing != 0 && xKing != 10 && yKing != 0 && yKing != 10) { //if the king is not on the border
+            if (grid[yKing][xKing + 1] != null && grid[yKing][xKing - 1] != null && grid[yKing + 1][xKing] != null && grid[yKing - 1][xKing] != null) {
+                if (grid[yKing][xKing + 1].owner == player2 && grid[yKing][xKing - 1].owner == player2 &&
+                        grid[yKing + 1][xKing].owner == player2 && grid[yKing - 1][xKing].owner == player2) {
+                    return true;
+                }
+            }
+        }
+        else {  //if the king is at the border with 3 pawns
+            if (yKing == 0 && xKing != 0 && xKing != 10) {  //surrounded with the border upstairs
+                if (grid[yKing][xKing + 1] != null && grid[yKing][xKing - 1] != null && grid[yKing - 1][xKing] != null) {
+                    if (grid[yKing][xKing + 1].owner == player2 && grid[yKing][xKing - 1].owner == player2 &&
+                            grid[yKing - 1][xKing].owner == player2) {
+                        return true;
+                    }
+                }
+            }
 
-
-        //if the king is at the edge with 3 pawns
-
+            if (yKing == 10 && xKing != 0 && xKing != 10) { //surrounded with the border downstairs
+                if (grid[yKing][xKing + 1] != null && grid[yKing][xKing - 1] != null && grid[yKing + 1][xKing] != null) {
+                    if (grid[yKing][xKing + 1].owner == player2 && grid[yKing][xKing - 1].owner == player2 &&
+                            grid[yKing + 1][xKing].owner == player2) {
+                        return true;
+                    }
+                }
+            }
+            if (xKing == 10 && yKing != 0 && yKing != 10) { //surrounded with the border from the right
+                if (grid[yKing][xKing - 1] != null && grid[yKing + 1][xKing] != null && grid[yKing - 1][xKing] != null) {
+                    if (grid[yKing][xKing - 1].owner == player2 && grid[yKing + 1][xKing].owner == player2 &&
+                            grid[yKing - 1][xKing].owner == player2) {
+                        return true;
+                    }
+                }
+            }
+            if (xKing == 0 && yKing != 0 && yKing != 10) {  //surrounded with the border from the left
+                if (grid[yKing][xKing + 1] != null && grid[yKing +1][xKing] != null && grid[yKing - 1][xKing] != null) {
+                    if (grid[yKing][xKing + 1].owner == player2 && grid[yKing + 1][xKing].owner == player2 &&
+                            grid[yKing - 1][xKing].owner == player2) {
+                        return true;
+                    }
+                }
+            }
+        }
 
 
         // if the king is at the corner
         if(grid[0][0] instanceof King || grid[0][10] instanceof King ||grid[10][0] instanceof King || grid[10][10] instanceof King ){
             return true;
         }
-        // if one of the players has no other pieces
 
         return false;
     }
@@ -220,8 +277,10 @@ public  class GameLogic implements PlayableLogic {
     @Override
     public void reset() {
         //grid= new ConcretePiece[11][11];
-
+        numOfReds = 0;
         isPlayer2Turn = true;
+        yKing = 5;
+        xKing = 5;
 
         for (int i = 0; i <= 10; i++) {
             for (int j = 0; j <= 10; j++) {
