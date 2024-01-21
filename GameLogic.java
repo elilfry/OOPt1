@@ -85,7 +85,7 @@ public  class GameLogic implements PlayableLogic {
                 return false;
             }
         }
-
+//
         if (grid[ay][ax].owner == player1){
             if(isSecondPlayerTurn()){// if the owner is player 1 and its not his turn
                 return false;
