@@ -11,7 +11,11 @@ public  class GameLogic implements PlayableLogic {
      */
 
     //data
-    int boardSize = 11;
+   protected int boardSize = 11;
+   private int xKing;
+   private int yKing;
+   private int numOfReds;
+
     private boolean isPlayer2Turn;
 
     private ConcretePiece[][] grid = new ConcretePiece[11][11];
@@ -35,7 +39,6 @@ public  class GameLogic implements PlayableLogic {
         if((ax !=bx) && (ay != by)){
             return false;
         }
-
 
 
         //no moving to a full position
@@ -96,7 +99,7 @@ public  class GameLogic implements PlayableLogic {
         }
 
 
-        //alow only one move at a turn
+
 
         //do not alow moving from null position to null position
 
@@ -104,6 +107,21 @@ public  class GameLogic implements PlayableLogic {
 
         grid[by][bx] = grid[ay][ax];
         grid[ay][ax]=null;
+
+        //////////////// calc the distance ///////
+
+        if(ay == by){ // moving in the x grid
+            grid[by][bx].distance += Math.abs(bx -ax)  ; // add to the total distance
+
+
+        }
+        if(ax == bx){ // moving in the x grid
+            grid[by][bx].distance += Math.abs(by -ay)  ; // add to the total distance
+
+        }
+// ///////////////////////////////
+
+
 
         isPlayer2Turn = !isPlayer2Turn;     //pass the turn
 
@@ -116,10 +134,17 @@ public  class GameLogic implements PlayableLogic {
                     if (grid[by][bx - 2].owner == grid[by][bx].owner && grid[by][bx-2] instanceof Pawn
                             && grid[by][bx-1] instanceof Pawn) {        //if the piece one the left to the enemy is an alli Pawn
                         grid[by][bx - 1] = null;       // KILLLLLLLLLLL!!!!!!
+                        ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                     }
                 }
-               if (bx<2 && grid[by][bx-1] instanceof Pawn){grid[by][bx - 1] = null;}       //if the enemy Pawn is on the left border- KILLLLL!!!
-                if (((by == 0 && bx == 2) || (by == 10 && bx == 2)) && grid[by][bx-1] instanceof Pawn){grid[by][bx-1] = null;}  //exception for the two left corners
+               if (bx<2 && grid[by][bx-1] instanceof Pawn) {
+                   grid[by][bx - 1] = null;      //if the enemy Pawn is on the left border- KILLLLL!!!
+                   ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
+               }
+                if (((by == 0 && bx == 2) || (by == 10 && bx == 2)) && grid[by][bx-1] instanceof Pawn) {
+                    grid[by][bx - 1] = null;  //exception for the two left corners
+                    ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
+                }
             }
         }
 
@@ -130,10 +155,16 @@ public  class GameLogic implements PlayableLogic {
                     if (grid[by][bx + 2].owner == grid[by][bx].owner && grid[by][bx+2] instanceof Pawn
                             && grid[by][bx+1] instanceof Pawn) { //if the piece one the right to the enemy is an alli Pawn
                         grid[by][bx + 1] = null; // KILLLLLLLLLLL!!!!!!
+                        ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                     }
                 }
-                if (bx>8 && grid[by][bx+1] instanceof Pawn){grid[by][bx + 1] = null;}  //if the enemy Pawn is on the right border- KILLLLL!!!
-                if (((by == 10 && bx == 8) || (by == 0 && bx == 8)) && grid[by][bx+1] instanceof Pawn){grid[by][bx+1] = null;} //exception for the two right corners (?)
+                if (bx>8 && grid[by][bx+1] instanceof Pawn) {
+                    grid[by][bx + 1] = null; //if the enemy Pawn is on the right border- KILLLLL!!!
+                    ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
+                }
+                if (((by == 10 && bx == 8) || (by == 0 && bx == 8)) && grid[by][bx+1] instanceof Pawn){grid[by][bx+1] = null;//exception for the two right corners (?)
+                ((Pawn) grid[by][bx]).setKills();}  //set the number of kills ++
+
             }
         }
 
@@ -144,10 +175,13 @@ public  class GameLogic implements PlayableLogic {
                     if (grid[by+2][bx].owner == grid[by][bx].owner && grid[by+2][bx] instanceof Pawn
                             && grid[by+1][bx] instanceof Pawn) { //if the piece one below to the enemy is an alli Pawn
                         grid[by+1][bx] = null; // KILLLLLLLLLLL!!!!!!
+                        ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                     }
                 }
-                if (by>8 && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;} //if the enemy Pawn is on the bottom border- KILLLLL!!!
-                if (((by == 8 && bx == 10) || (by == 8 && bx == 0)) && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;} //exception for the two bottom corners (?)
+                if (by>8 && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;//if the enemy Pawn is on the bottom border- KILLLLL!!!
+                ((Pawn) grid[by][bx]).setKills(); } //set the number of kills ++
+                if (((by == 8 && bx == 10) || (by == 8 && bx == 0)) && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;//exception for the two bottom corners (?)
+                ((Pawn) grid[by][bx]).setKills(); } //set the number of kills ++
             }
         }
 
@@ -158,10 +192,14 @@ public  class GameLogic implements PlayableLogic {
                     if (grid[by-2][bx].owner == grid[by][bx].owner && grid[by-2][bx] instanceof Pawn
                             && grid[by-1][bx] instanceof Pawn) { //if the piece one above to the enemy is an alli Pawn
                         grid[by-1][bx] = null; // KILLLLLLLLLLL!!!!!!
+                        ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                     }
                 }
-                if (by<2 && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;} //if the enemy Pawn is on the top border- KILLLLL!!!
-                if (((by == 2 && bx == 10) || (by == 2 && bx == 0)) && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;} //exception for the two top corners (?)
+                if (by<2 && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;//if the enemy Pawn is on the top border- KILLLLL!!!
+                ((Pawn) grid[by][bx]).setKills(); }//set the number of kills ++
+                if (((by == 2 && bx == 10) || (by == 2 && bx == 0)) && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null; //exception for the two top corners (?)
+                ((Pawn) grid[by][bx]).setKills(); } //set the number of kills ++
+
             }
         }
 
@@ -193,21 +231,84 @@ public  class GameLogic implements PlayableLogic {
     @Override
     public boolean isGameFinished() {
 
+        // if one of the red player has no other pieces and find the king
+        for (int i=0; i <= 10; i++) {    //check if the matrix has no red pawns
+            for (int j = 0; j <= 10; j++) {
+                if (grid[i][j] != null && grid[i][j].owner == player2) {
+                    numOfReds++;
+                }
+                if (grid[i][j] instanceof King) {
+                    yKing = i;
+                    xKing = j;
+                }
+            }
+            if (numOfReds == 0) {
+                player1.setWins(); //set the number of wins on player 1 ++
+
+                return true;
+            }   //if player2 ran out of Pawns == player 1(blue) wins
+        }
+
         //if the king is surrounded by 4 pawns
+        if (xKing != 0 && xKing != 10 && yKing != 0 && yKing != 10) { //if the king is not on the border
+            if (grid[yKing][xKing + 1] != null && grid[yKing][xKing - 1] != null && grid[yKing + 1][xKing] != null && grid[yKing - 1][xKing] != null) {
+                if (grid[yKing][xKing + 1].owner == player2 && grid[yKing][xKing - 1].owner == player2 &&
+                        grid[yKing + 1][xKing].owner == player2 && grid[yKing - 1][xKing].owner == player2) {
+                    player2.setWins(); //set the number of wins on player 2 ++
+                    return true; //player 2 (red) wins
+                }
+            }
+        }
+        else {  //if the king is at the border with 3 pawns
+            if (yKing == 0 && xKing != 0 && xKing != 10) {  //surrounded with the border upstairs
+                if (grid[yKing][xKing + 1] != null && grid[yKing][xKing - 1] != null && grid[yKing - 1][xKing] != null) {
+                    if (grid[yKing][xKing + 1].owner == player2 && grid[yKing][xKing - 1].owner == player2 &&
+                            grid[yKing - 1][xKing].owner == player2) {
+                        player2.setWins(); //set the number of wins on player 2 ++
+                        return true; //player 2 (red) wins
+                    }
+                }
+            }
 
-
-        //if the king is at the edge with 3 pawns
-
+            if (yKing == 10 && xKing != 0 && xKing != 10) { //surrounded with the border downstairs
+                if (grid[yKing][xKing + 1] != null && grid[yKing][xKing - 1] != null && grid[yKing + 1][xKing] != null) {
+                    if (grid[yKing][xKing + 1].owner == player2 && grid[yKing][xKing - 1].owner == player2 &&
+                            grid[yKing + 1][xKing].owner == player2) {
+                        player2.setWins(); //set the number of wins on player 2 ++
+                        return true; //player 2 (red) wins
+                    }
+                }
+            }
+            if (xKing == 10 && yKing != 0 && yKing != 10) { //surrounded with the border from the right
+                if (grid[yKing][xKing - 1] != null && grid[yKing + 1][xKing] != null && grid[yKing - 1][xKing] != null) {
+                    if (grid[yKing][xKing - 1].owner == player2 && grid[yKing + 1][xKing].owner == player2 &&
+                            grid[yKing - 1][xKing].owner == player2) {
+                        player2.setWins(); //set the number of wins on player 2 ++
+                        return true; //player 2 (red) wins
+                    }
+                }
+            }
+            if (xKing == 0 && yKing != 0 && yKing != 10) {  //surrounded with the border from the left
+                if (grid[yKing][xKing + 1] != null && grid[yKing +1][xKing] != null && grid[yKing - 1][xKing] != null) {
+                    if (grid[yKing][xKing + 1].owner == player2 && grid[yKing + 1][xKing].owner == player2 &&
+                            grid[yKing - 1][xKing].owner == player2) {
+                        player2.setWins(); //set the number of wins on player 2 ++
+                        return true; //player 2 (red) wins
+                    }
+                }
+            }
+        }
 
 
         // if the king is at the corner
         if(grid[0][0] instanceof King || grid[0][10] instanceof King ||grid[10][0] instanceof King || grid[10][10] instanceof King ){
-            return true;
+            player1.setWins(); //set the number of wins on player 1 ++
+            return true; //player 1 (blue) wins
         }
-        // if one of the players has no other pieces
 
         return false;
     }
+
 
     @Override
     public boolean isSecondPlayerTurn() {

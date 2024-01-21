@@ -1,13 +1,16 @@
 public class Pawn extends ConcretePiece{
 
 //data
+protected int kills;
+
 
     //constructor
 
-public Pawn(Player player)
-{
+public Pawn(Player player){
+
     owner =player;
     type ="♟";
+    //this.name = name;
 
 }
 
@@ -21,6 +24,14 @@ public Pawn(Player player)
     @Override
     public String getType() {
         return type;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void setKills() {
+        this.kills = this.getKills() +1;
     }
 
 
