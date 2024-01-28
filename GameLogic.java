@@ -207,6 +207,8 @@ public  class GameLogic implements PlayableLogic {
 
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        grid[by][bx].setPos(new Position(bx,by));   //add the new position to the current piece moving list
+
         return true;
     }
 
@@ -321,7 +323,7 @@ public  class GameLogic implements PlayableLogic {
     @Override
     public void reset() {
         //grid= new ConcretePiece[11][11];
-
+        int k=0;
         isPlayer2Turn = true;
 
         for (int i = 0; i <= 10; i++) {
@@ -331,31 +333,62 @@ public  class GameLogic implements PlayableLogic {
         }
         for (int i = 3; i <= 7; i++) {
             grid[0][i] = new Pawn(player2);
+            grid[0][i].setPos(new Position(i,0));
+
             grid[10][i] = new Pawn(player2);
+            grid[10][i].setPos(new Position(i,10));
+
             grid[i][0] = new Pawn(player2);
+            grid[i][0].setPos(new Position(0,i));
+
             grid[i][10] = new Pawn(player2);
-            grid[5][i] = new Pawn(player1);
+            grid[i][10].setPos(new Position(10,i));
+
+            if (i != 5) {
+                grid[5][i] = new Pawn(player1);
+                grid[5][i].setPos(new Position(i, 5));
+            }
+
             if (i > 3 && i < 7) {
                 grid[4][i] = new Pawn(player1);
+                grid[4][i].setPos(new Position(i,4));
+
                 grid[6][i] = new Pawn(player1);
+                grid[6][i].setPos(new Position(i,6));
+
                 if(i==5){
                     grid[3][i] = new Pawn(player1);
-                    grid[7][i] = new Pawn(player1);
-                    grid[i][1] = new Pawn(player2);
-                    grid[i][9] = new Pawn(player2);
-                    grid[1][i] = new Pawn(player2);
-                    grid[9][i] = new Pawn(player2);
+                    grid[3][5].setPos(new Position(5,3));
 
+                    grid[7][i] = new Pawn(player1);
+                    grid[7][5].setPos(new Position(5,7));
+
+                    grid[i][1] = new Pawn(player2);
+                    grid[5][1].setPos(new Position(1,5));
+
+                    grid[i][9] = new Pawn(player2);
+                    grid[5][9].setPos(new Position(9,5));
+
+                    grid[1][i] = new Pawn(player2);
+                    grid[1][5].setPos(new Position(5,1));
+
+                    grid[9][i] = new Pawn(player2);
+                    grid[9][5].setPos(new Position(5,9));
                 }
             }
-            if (i == 5) {
-                grid[3][i] = new Pawn(player1);
-                grid[7][i] = new Pawn(player1);
-
-            }
+//            if (i == 5) {
+//                grid[3][i] = new Pawn(player1);
+//                grid[3][5].setPos(new Position(5,3));
+//
+//                grid[7][i] = new Pawn(player1);
+//                grid[7][5].setPos(new Position(5,7));
+//
+//            }
 
         }
+
         grid[5][5] = new King(player1);
+        grid[5][5].setPos(new Position(5,5));
 
     }
 
@@ -369,4 +402,46 @@ public  class GameLogic implements PlayableLogic {
         return boardSize;
     }
 
+    public void seNames(){
+    //Defenders:
+        grid[0][3].setName("D1");
+        grid[0][4].setName("D2");
+        grid[0][5].setName("D3");
+        grid[0][6].setName("D4");
+        grid[0][7].setName("D5");
+        grid[1][5].setName("D6");
+        grid[3][0].setName("D7");
+        grid[3][10].setName("D8");
+        grid[4][0].setName("D9");
+        grid[4][10].setName("D10");
+        grid[5][0].setName("D11");
+        grid[5][1].setName("D12");
+        grid[5][9].setName("D13");
+        grid[5][10].setName("D14");
+        grid[6][0].setName("D15");
+        grid[6][10].setName("D16");
+        grid[7][0].setName("D17");
+        grid[7][10].setName("D18");
+        grid[9][5].setName("D19");
+        grid[10][3].setName("D20");
+        grid[10][4].setName("D21");
+        grid[10][5].setName("D22");
+        grid[10][6].setName("D23");
+        grid[10][7].setName("D24");
+
+    //Attackers:
+        grid[3][5].setName("A1");
+        grid[4][4].setName("A2");
+        grid[4][5].setName("A3");
+        grid[4][6].setName("A4");
+        grid[5][3].setName("A5");
+        grid[5][4].setName("A6");
+        grid[5][5].setName("A7");   //the King
+        grid[5][6].setName("A8");
+        grid[5][7].setName("A9");
+        grid[6][4].setName("A10");
+        grid[6][5].setName("A11");
+        grid[6][6].setName("A12");
+        grid[7][5].setName("A13");
+    }
 }

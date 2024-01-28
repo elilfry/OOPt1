@@ -4,14 +4,12 @@ public class Pawn extends ConcretePiece{
 protected int kills;
 
 
-    //constructor
+//constructor
 
 public Pawn(Player player){
 
     owner =player;
     type ="♟";
-    //this.name = name;
-
 }
 
 
