@@ -24,7 +24,7 @@ public  class GameLogic implements PlayableLogic {
 
     private ArrayList<ConcretePiece> killed = new ArrayList<ConcretePiece>();
 
-    private int[][] steppedOn = new int[11][11];
+    private Position[][] steppedOn = new Position[11][11];
 
      ConcretePlayer player1= new ConcretePlayer(true);
      ConcretePlayer player2 = new ConcretePlayer(false);
@@ -235,7 +235,7 @@ public  class GameLogic implements PlayableLogic {
 
         grid[by][bx].setPos(new Position(bx,by));   //add the new position to the current piece moving list
 
-        steppedOn[by][bx]++;    //add the number of steps the Piece stepped to the total
+        b.setSteppedOnMe();    //add the number of steps the Piece stepped to the total
 
 //
 //        printing tests:
@@ -366,65 +366,51 @@ public  class GameLogic implements PlayableLogic {
         for (int i = 0; i <= 10; i++) {
             for (int j = 0; j <= 10; j++) {
                 grid[j][i] = null;
-                steppedOn[j][i] = 0;
             }
         }
         for (int i = 3; i <= 7; i++) {
             grid[0][i] = new Pawn(player2);
             grid[0][i].setPos(new Position(i,0));
-            steppedOn[0][i] = 1;
 
             grid[10][i] = new Pawn(player2);
             grid[10][i].setPos(new Position(i,10));
-            steppedOn[10][i] = 1;
 
             grid[i][0] = new Pawn(player2);
             grid[i][0].setPos(new Position(0,i));
-            steppedOn[i][0] = 1;
 
             grid[i][10] = new Pawn(player2);
             grid[i][10].setPos(new Position(10,i));
-            steppedOn[i][10] = 1;
 
             if (i != 5) {
                 grid[5][i] = new Pawn(player1);
                 grid[5][i].setPos(new Position(i, 5));
-                steppedOn[5][i] = 1;
             }
 
             if (i > 3 && i < 7) {
                 grid[4][i] = new Pawn(player1);
                 grid[4][i].setPos(new Position(i,4));
-                steppedOn[4][i] = 1;
 
                 grid[6][i] = new Pawn(player1);
                 grid[6][i].setPos(new Position(i,6));
-                steppedOn[6][i] = 1;
 
                 if(i==5){
                     grid[3][i] = new Pawn(player1);
                     grid[3][5].setPos(new Position(5,3));
-                    steppedOn[3][5] = 1;
 
                     grid[7][i] = new Pawn(player1);
                     grid[7][5].setPos(new Position(5,7));
-                    steppedOn[7][5] = 1;
 
                     grid[i][1] = new Pawn(player2);
                     grid[5][1].setPos(new Position(1,5));
-                    steppedOn[5][1] = 1;
 
                     grid[i][9] = new Pawn(player2);
                     grid[5][9].setPos(new Position(9,5));
-                    steppedOn[5][9] = 1;
 
                     grid[1][i] = new Pawn(player2);
                     grid[1][5].setPos(new Position(5,1));
-                    steppedOn[1][5] = 1;
 
                     grid[9][i] = new Pawn(player2);
                     grid[9][5].setPos(new Position(5,9));
-                    steppedOn[9][5] = 1;
                 }
             }
 //            if (i == 5) {
@@ -440,9 +426,22 @@ public  class GameLogic implements PlayableLogic {
 
         grid[5][5] = new King(player1);
         grid[5][5].setPos(new Position(5,5));
-        steppedOn[5][5] = 1;
 
-        seNames();
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                steppedOn[j][i] = new Position(i,j);
+                if (grid[j][i] != null){
+                    steppedOn[j][i].setSteppedOnMe();
+                }
+            }
+
+        }
+
+
+
+
+
+        setNames();
     }
 
     @Override
@@ -455,7 +454,7 @@ public  class GameLogic implements PlayableLogic {
         return boardSize;
     }
 
-    public void seNames(){
+    public void setNames(){
     //Defenders:
         grid[0][3].setName("D1");
         grid[0][4].setName("D2");

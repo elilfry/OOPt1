@@ -5,6 +5,7 @@ public class Position {
 
     //data
 private int x,y;
+private int steppedOnMe;
 
     @Override
     public String toString() {
@@ -35,14 +36,19 @@ private int x,y;
         this.y = y;
     }
 
-    class PositionTakenCompare implements Comparator<Integer> { //compare the distance of 2 pieces
-        public int compare (Integer c1, Integer c2){
-            if(c1< c2) return -1;
-            if(c1> c2) return 1;
+    class PositionTakenCompare implements Comparator<Position> { //compare the distance of 2 pieces
+        public int compare (Position c1, Position c2){
+            if(c1.getSteppedOnMe()< c2.getSteppedOnMe()) return -1;
+            if(c1.getSteppedOnMe()> c2.getSteppedOnMe()) return 1;
             else return 0;
         }
     }
 
+    public int getSteppedOnMe() {
+        return steppedOnMe;
+    }
 
-
+    public void setSteppedOnMe() {
+        this.steppedOnMe = this.getSteppedOnMe() +1;
+    }
 }
