@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 
 public  class GameLogic implements PlayableLogic {
@@ -119,7 +121,7 @@ public  class GameLogic implements PlayableLogic {
 
         }
         if(ax == bx){ // moving in the x grid
-            grid[by][bx].distance += Math.abs(by -ay)  ; // add to the total distance
+            grid[by][bx].setDistance(Math.abs(by -ay));  ; // add to the total distance
 
         }
 // ///////////////////////////////

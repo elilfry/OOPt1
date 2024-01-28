@@ -1,3 +1,5 @@
+import java.util.Comparator;
+
 public class Position {
 
 
@@ -31,6 +33,14 @@ private int x,y;
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    class PositionTakenCompare implements Comparator<Integer> { //compare the distance of 2 pieces
+        public int compare (Integer c1, Integer c2){
+            if(c1< c2) return -1;
+            if(c1> c2) return 1;
+            else return 0;
+        }
     }
 
 

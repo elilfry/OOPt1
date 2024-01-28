@@ -1,3 +1,5 @@
+import java.util.Comparator;
+
 public class Pawn extends ConcretePiece{
 
 //data
@@ -32,5 +34,12 @@ public Pawn(Player player){
         this.kills = this.getKills() +1;
     }
 
+    class KillesCompare implements Comparator<Pawn> {
+        public int compare (Pawn c1, Pawn c2){
+        if(c1.getKills() < c2.getKills()) return -1;
+        if(c1.getKills() > c2.getKills()) return 1;
+        else return 0;
+    }
+    }
 
 }
