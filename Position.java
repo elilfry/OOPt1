@@ -4,7 +4,11 @@ public class Position {
     //data
 private int x,y;
 
-    //constructor
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y +")";
+    }
+//constructor
 
     public Position(int x,int y){
         this.x=x;

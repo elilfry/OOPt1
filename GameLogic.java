@@ -20,6 +20,10 @@ public  class GameLogic implements PlayableLogic {
 
     private ConcretePiece[][] grid = new ConcretePiece[11][11];
 
+    private ArrayList<ConcretePiece> killed = new ArrayList<ConcretePiece>();
+
+    private int[][] steppedOn = new int[11][11];
+
      ConcretePlayer player1= new ConcretePlayer(true);
      ConcretePlayer player2 = new ConcretePlayer(false);
 
@@ -111,8 +115,7 @@ public  class GameLogic implements PlayableLogic {
         //////////////// calc the distance ///////
 
         if(ay == by){ // moving in the x grid
-            grid[by][bx].distance += Math.abs(bx -ax)  ; // add to the total distance
-
+            grid[by][bx].setDistance( Math.abs(bx -ax) ); // add to the total distance
 
         }
         if(ax == bx){ // moving in the x grid
@@ -133,15 +136,18 @@ public  class GameLogic implements PlayableLogic {
                 if(bx-2 >= 0 && grid[by][bx - 2] != null) {     //if the enemy on the left isn't on the border and the that position isn't empty
                     if (grid[by][bx - 2].owner == grid[by][bx].owner && grid[by][bx-2] instanceof Pawn
                             && grid[by][bx-1] instanceof Pawn) {        //if the piece one the left to the enemy is an alli Pawn
+                        killed.add(grid[by][bx-1]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
                         grid[by][bx - 1] = null;       // KILLLLLLLLLLL!!!!!!
                         ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                     }
                 }
                if (bx<2 && grid[by][bx-1] instanceof Pawn) {
+                   killed.add(grid[by][bx-1]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
                    grid[by][bx - 1] = null;      //if the enemy Pawn is on the left border- KILLLLL!!!
                    ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                }
                 if (((by == 0 && bx == 2) || (by == 10 && bx == 2)) && grid[by][bx-1] instanceof Pawn) {
+                    killed.add(grid[by][bx-1]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
                     grid[by][bx - 1] = null;  //exception for the two left corners
                     ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                 }
@@ -154,16 +160,21 @@ public  class GameLogic implements PlayableLogic {
                 if(bx+2 <= 10 && grid[by][bx + 2] != null) { //if the enemy on the right isn't on the border and the that position isn't empty
                     if (grid[by][bx + 2].owner == grid[by][bx].owner && grid[by][bx+2] instanceof Pawn
                             && grid[by][bx+1] instanceof Pawn) { //if the piece one the right to the enemy is an alli Pawn
+                        killed.add(grid[by][bx + 1]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
                         grid[by][bx + 1] = null; // KILLLLLLLLLLL!!!!!!
                         ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                     }
                 }
                 if (bx>8 && grid[by][bx+1] instanceof Pawn) {
+                    killed.add(grid[by][bx + 1]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
                     grid[by][bx + 1] = null; //if the enemy Pawn is on the right border- KILLLLL!!!
                     ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                 }
-                if (((by == 10 && bx == 8) || (by == 0 && bx == 8)) && grid[by][bx+1] instanceof Pawn){grid[by][bx+1] = null;//exception for the two right corners (?)
-                ((Pawn) grid[by][bx]).setKills();}  //set the number of kills ++
+                if (((by == 10 && bx == 8) || (by == 0 && bx == 8)) && grid[by][bx+1] instanceof Pawn){
+                    killed.add(grid[by][bx + 1]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
+                    grid[by][bx+1] = null;//exception for the two right corners (?)
+                ((Pawn) grid[by][bx]).setKills(); //set the number of kills ++
+                }
 
             }
         }
@@ -174,14 +185,21 @@ public  class GameLogic implements PlayableLogic {
                 if(by+2 <= 10 && grid[by+2][bx] != null) { //if the enemy from below isn't on the border and the that position isn't empty
                     if (grid[by+2][bx].owner == grid[by][bx].owner && grid[by+2][bx] instanceof Pawn
                             && grid[by+1][bx] instanceof Pawn) { //if the piece one below to the enemy is an alli Pawn
+                        killed.add(grid[by + 1][bx]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
                         grid[by+1][bx] = null; // KILLLLLLLLLLL!!!!!!
                         ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                     }
                 }
-                if (by>8 && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;//if the enemy Pawn is on the bottom border- KILLLLL!!!
-                ((Pawn) grid[by][bx]).setKills(); } //set the number of kills ++
-                if (((by == 8 && bx == 10) || (by == 8 && bx == 0)) && grid[by+1][bx] instanceof Pawn){grid[by+1][bx] = null;//exception for the two bottom corners (?)
-                ((Pawn) grid[by][bx]).setKills(); } //set the number of kills ++
+                if (by>8 && grid[by+1][bx] instanceof Pawn){
+                    killed.add(grid[by + 1][bx]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
+                    grid[by+1][bx] = null;//if the enemy Pawn is on the bottom border- KILLLLL!!!
+                ((Pawn) grid[by][bx]).setKills();   //set the number of kills ++
+                }
+                if (((by == 8 && bx == 10) || (by == 8 && bx == 0)) && grid[by+1][bx] instanceof Pawn){
+                    killed.add(grid[by + 1][bx]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
+                    grid[by+1][bx] = null;//exception for the two bottom corners (?)
+                ((Pawn) grid[by][bx]).setKills();   //set the number of kills ++
+                }
             }
         }
 
@@ -191,15 +209,21 @@ public  class GameLogic implements PlayableLogic {
                 if(by-2 >= 0 && grid[by-2][bx] != null) { //if the enemy from above isn't on the border and the that position isn't empty
                     if (grid[by-2][bx].owner == grid[by][bx].owner && grid[by-2][bx] instanceof Pawn
                             && grid[by-1][bx] instanceof Pawn) { //if the piece one above to the enemy is an alli Pawn
+                        killed.add(grid[by - 1][bx]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
                         grid[by-1][bx] = null; // KILLLLLLLLLLL!!!!!!
                         ((Pawn) grid[by][bx]).setKills();  //set the number of kills ++
                     }
                 }
-                if (by<2 && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null;//if the enemy Pawn is on the top border- KILLLLL!!!
-                ((Pawn) grid[by][bx]).setKills(); }//set the number of kills ++
-                if (((by == 2 && bx == 10) || (by == 2 && bx == 0)) && grid[by-1][bx] instanceof Pawn){grid[by-1][bx] = null; //exception for the two top corners (?)
-                ((Pawn) grid[by][bx]).setKills(); } //set the number of kills ++
-
+                if (by<2 && grid[by-1][bx] instanceof Pawn){
+                    killed.add(grid[by - 1][bx]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
+                    grid[by-1][bx] = null;  //if the enemy Pawn is on the top border- KILLLLL!!!
+                ((Pawn) grid[by][bx]).setKills();   //set the number of kills ++
+                }
+                if (((by == 2 && bx == 10) || (by == 2 && bx == 0)) && grid[by-1][bx] instanceof Pawn){
+                    killed.add(grid[by - 1][bx]); //add the Pawn that is about to be killed to the ArrayList of the pieces that not on the board
+                    grid[by-1][bx] = null; //exception for the two top corners (?)
+                ((Pawn) grid[by][bx]).setKills(); //set the number of kills ++
+                }
             }
         }
 
@@ -208,6 +232,17 @@ public  class GameLogic implements PlayableLogic {
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         grid[by][bx].setPos(new Position(bx,by));   //add the new position to the current piece moving list
+
+        steppedOn[by][bx]++;    //add the number of steps the Piece stepped to the total
+
+//
+//        printing tests:
+//        System.out.println(grid[by][bx].getName() + grid[by][bx].getPos());
+//        if (grid[by][bx] instanceof Pawn) {
+//            System.out.println(grid[by][bx].getName() + " kills: " + ((Pawn) grid[by][bx]).getKills());
+//        }
+//        System.out.println(grid[by][bx].getName() + "'s total distance = " + grid[by][bx].getDistance());
+//        System.out.println("stepped on this position: " + steppedOn[by][bx]);
 
         return true;
     }
@@ -329,51 +364,65 @@ public  class GameLogic implements PlayableLogic {
         for (int i = 0; i <= 10; i++) {
             for (int j = 0; j <= 10; j++) {
                 grid[j][i] = null;
+                steppedOn[j][i] = 0;
             }
         }
         for (int i = 3; i <= 7; i++) {
             grid[0][i] = new Pawn(player2);
             grid[0][i].setPos(new Position(i,0));
+            steppedOn[0][i] = 1;
 
             grid[10][i] = new Pawn(player2);
             grid[10][i].setPos(new Position(i,10));
+            steppedOn[10][i] = 1;
 
             grid[i][0] = new Pawn(player2);
             grid[i][0].setPos(new Position(0,i));
+            steppedOn[i][0] = 1;
 
             grid[i][10] = new Pawn(player2);
             grid[i][10].setPos(new Position(10,i));
+            steppedOn[i][10] = 1;
 
             if (i != 5) {
                 grid[5][i] = new Pawn(player1);
                 grid[5][i].setPos(new Position(i, 5));
+                steppedOn[5][i] = 1;
             }
 
             if (i > 3 && i < 7) {
                 grid[4][i] = new Pawn(player1);
                 grid[4][i].setPos(new Position(i,4));
+                steppedOn[4][i] = 1;
 
                 grid[6][i] = new Pawn(player1);
                 grid[6][i].setPos(new Position(i,6));
+                steppedOn[6][i] = 1;
 
                 if(i==5){
                     grid[3][i] = new Pawn(player1);
                     grid[3][5].setPos(new Position(5,3));
+                    steppedOn[3][5] = 1;
 
                     grid[7][i] = new Pawn(player1);
                     grid[7][5].setPos(new Position(5,7));
+                    steppedOn[7][5] = 1;
 
                     grid[i][1] = new Pawn(player2);
                     grid[5][1].setPos(new Position(1,5));
+                    steppedOn[5][1] = 1;
 
                     grid[i][9] = new Pawn(player2);
                     grid[5][9].setPos(new Position(9,5));
+                    steppedOn[5][9] = 1;
 
                     grid[1][i] = new Pawn(player2);
                     grid[1][5].setPos(new Position(5,1));
+                    steppedOn[1][5] = 1;
 
                     grid[9][i] = new Pawn(player2);
                     grid[9][5].setPos(new Position(5,9));
+                    steppedOn[9][5] = 1;
                 }
             }
 //            if (i == 5) {
@@ -389,7 +438,9 @@ public  class GameLogic implements PlayableLogic {
 
         grid[5][5] = new King(player1);
         grid[5][5].setPos(new Position(5,5));
+        steppedOn[5][5] = 1;
 
+        seNames();
     }
 
     @Override
@@ -444,4 +495,12 @@ public  class GameLogic implements PlayableLogic {
         grid[6][6].setName("A12");
         grid[7][5].setName("A13");
     }
+
+
+    
+
+
+
+
+
 }

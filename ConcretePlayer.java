@@ -1,7 +1,6 @@
 public class ConcretePlayer implements Player{
 //data
 
-
     private boolean playerOne;
     private  int wins = 0;
 
