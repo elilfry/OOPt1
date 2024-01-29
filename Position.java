@@ -36,13 +36,7 @@ private int steppedOnMe;
         this.y = y;
     }
 
-    class PositionTakenCompare implements Comparator<Position> { //compare the distance of 2 pieces
-        public int compare (Position c1, Position c2){
-            if(c1.getSteppedOnMe()< c2.getSteppedOnMe()) return -1;
-            if(c1.getSteppedOnMe()> c2.getSteppedOnMe()) return 1;
-            else return 0;
-        }
-    }
+
 
     public int getSteppedOnMe() {
         return steppedOnMe;
@@ -50,5 +44,13 @@ private int steppedOnMe;
 
     public void setSteppedOnMe() {
         this.steppedOnMe = this.getSteppedOnMe() +1;
+    }
+}
+
+class PositionTakenCompare implements Comparator<Position> { //compare the distance of 2 pieces
+    public int compare (Position c1, Position c2){
+        if(c1.getSteppedOnMe()< c2.getSteppedOnMe()) return -1;
+        if(c1.getSteppedOnMe()> c2.getSteppedOnMe()) return 1;
+        else return 0;
     }
 }

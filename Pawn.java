@@ -1,18 +1,18 @@
 import java.util.Comparator;
 
-public class Pawn extends ConcretePiece{
+public class Pawn extends ConcretePiece {
 
-//data
-protected int kills;
+    //data
+    protected int kills;
 
 
 //constructor
 
-public Pawn(Player player){
+    public Pawn(Player player) {
 
-    owner =player;
-    type ="♟";
-}
+        owner = player;
+        type = "♟";
+    }
 
 
     //copy
@@ -31,15 +31,15 @@ public Pawn(Player player){
     }
 
     public void setKills() {
-        this.kills = this.getKills() +1;
-    }
-
-    class KillesCompare implements Comparator<Pawn> {
-        public int compare (Pawn c1, Pawn c2){
-        if(c1.getKills() < c2.getKills()) return -1;
-        if(c1.getKills() > c2.getKills()) return 1;
-        else return 0;
-    }
+        this.kills = this.getKills() + 1;
     }
 
 }
+    class KillesCompare implements Comparator<Pawn> {
+        public int compare (Pawn c1, Pawn c2){
+        if(c1.getKills() < c2.getKills()) return 1;
+        if(c1.getKills() > c2.getKills()) return -1;
+        else return 0;
+        }
+    }
+
