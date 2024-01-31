@@ -239,6 +239,9 @@ public  class GameLogic implements PlayableLogic {
 
         steppedOn[by][bx].setSteppedOnMe(grid[by][bx]);    //add the number of steps the Piece stepped to the total
 
+        if(isGameFinished()){
+            printAllStuff();
+        }
 
 //
 //        printing tests:
@@ -287,7 +290,7 @@ public  class GameLogic implements PlayableLogic {
             if (numOfReds == 0) {
                 player1.setWins(); //set the number of wins on player 1 ++
                 winner = 1;
-                printAllStuff();
+               // printAllStuff();
 
                 return true;
             }   //if player2 ran out of Pawns == player 1(blue) wins
@@ -300,7 +303,7 @@ public  class GameLogic implements PlayableLogic {
                         grid[yKing + 1][xKing].owner == player2 && grid[yKing - 1][xKing].owner == player2) {
                     player2.setWins(); //set the number of wins on player 2 ++
                     winner = 2;
-                    printAllStuff();
+                   // printAllStuff();
                     return true; //player 2 (red) wins
                 }
             }
@@ -312,7 +315,7 @@ public  class GameLogic implements PlayableLogic {
                             grid[yKing - 1][xKing].owner == player2) {
                         player2.setWins(); //set the number of wins on player 2 ++
                         winner = 2;
-                        printAllStuff();
+                      //  printAllStuff();
                         return true; //player 2 (red) wins
                     }
                 }
@@ -324,7 +327,7 @@ public  class GameLogic implements PlayableLogic {
                             grid[yKing + 1][xKing].owner == player2) {
                         player2.setWins(); //set the number of wins on player 2 ++
                         winner = 2;
-                        printAllStuff();
+                       // printAllStuff();
                         return true; //player 2 (red) wins
                     }
                 }
@@ -335,7 +338,7 @@ public  class GameLogic implements PlayableLogic {
                             grid[yKing - 1][xKing].owner == player2) {
                         player2.setWins(); //set the number of wins on player 2 ++
                         winner = 2;
-                        printAllStuff();
+                       // printAllStuff();
                         return true; //player 2 (red) wins
                     }
                 }
@@ -346,7 +349,7 @@ public  class GameLogic implements PlayableLogic {
                             grid[yKing - 1][xKing].owner == player2) {
                         player2.setWins(); //set the number of wins on player 2 ++
                         winner = 2;     //the winner is Player2 (pint his data first)
-                        printAllStuff();
+                        //printAllStuff();
                         return true; //player 2 (red) wins
                     }
                 }
@@ -358,7 +361,7 @@ public  class GameLogic implements PlayableLogic {
         if(grid[0][0] instanceof King || grid[0][10] instanceof King ||grid[10][0] instanceof King || grid[10][10] instanceof King ){
             player1.setWins(); //set the number of wins on player 1 ++
             winner =1;  //the winner is Player1 (Print his data first)
-            printAllStuff();
+           // printAllStuff();
             return true; //player 1 (blue) wins
         }
 
