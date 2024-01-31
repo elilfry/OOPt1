@@ -62,7 +62,7 @@ public abstract class ConcretePiece implements Piece {
 
     class SteppedHistoryCompare implements Comparator<ConcretePiece>{
         public int compare(ConcretePiece o1, ConcretePiece o2) {
-            return o2.getMap().size() - o1.getMap().size();
+            return o1.getMap().size() - o2.getMap().size();
         }
     }
 
@@ -83,8 +83,8 @@ public abstract class ConcretePiece implements Piece {
 
     class SerialNumberCompare implements  Comparator<ConcretePiece>{
         public int compare(ConcretePiece o1, ConcretePiece o2) {
-            if(o1.getSerialNumber() < o2.getSerialNumber()) return 1;
-            if(o1.getSerialNumber() > o2.getSerialNumber()) return -1;
+            if(o1.getSerialNumber() < o2.getSerialNumber()) return -1;
+            if(o1.getSerialNumber() > o2.getSerialNumber()) return 1;
             return 0;
         }
     }

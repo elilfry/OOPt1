@@ -51,8 +51,8 @@ public class Position {
 }
 class PositionTakenCompare implements Comparator<Position> { //compare the distance of 2 pieces
     public int compare(Position c1, Position c2) {
-        if (c1.getSteppedOnMe() < c2.getSteppedOnMe()) return -1;
-        if (c1.getSteppedOnMe() > c2.getSteppedOnMe()) return 1;
+        if (c1.getSteppedOnMe() < c2.getSteppedOnMe()) return 1;
+        if (c1.getSteppedOnMe() > c2.getSteppedOnMe()) return -1;
         else return 0;
     }
 }

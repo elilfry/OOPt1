@@ -540,7 +540,7 @@ public  class GameLogic implements PlayableLogic {
      */
     public void printSteps(){
         //sort by name and staepped history
-        Comparator<ConcretePiece> NameAndHistoryComp = new NameCompare().thenComparing(new SteppedHistoryCompare());
+        Comparator<ConcretePiece> NameAndHistoryComp = new NameCompare().thenComparing(new SteppedHistoryCompare()).thenComparing(new SerialNumberCompare());
         Collections.sort(allPieces,NameAndHistoryComp);
          for(ConcretePiece i : allPieces){
              if (i.getMap().size() > 1){ System.out.println(i.getName() + ": " + i.getMap());}
