@@ -2,20 +2,18 @@ import java.util.Comparator;
 
 public class Pawn extends ConcretePiece {
 
-    //data
+//data
     protected int kills;
 
 
 //constructor
 
-    public Pawn(Player player) {
-
+    public Pawn(Player player){
         owner = player;
-        type = "♟";
+        type = getType();
     }
 
-
-    //copy
+//functions:
     @Override
     public Player getOwner() {
         return owner;
@@ -23,7 +21,10 @@ public class Pawn extends ConcretePiece {
 
     @Override
     public String getType() {
-        return type;
+        if (getOwner().isPlayerOne()){
+            return "♙";
+        }
+        else return "♟";
     }
 
     public int getKills() {

@@ -1,21 +1,23 @@
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Position {
 
 
     //data
-private int x,y;
-private int steppedOnMe;
+    private int x, y;
+    //private int steppedOnMe;
+    ArrayList<ConcretePiece> steppedOnMe = new ArrayList<>();
 
     @Override
     public String toString() {
-        return "(" + x + ", " + y +")";
+        return "(" + x + ", " + y + ")";
     }
 //constructor
 
-    public Position(int x,int y){
-        this.x=x;
-        this.y=y;
+    public Position(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
     //function
 
@@ -37,20 +39,36 @@ private int steppedOnMe;
     }
 
 
-
     public int getSteppedOnMe() {
-        return steppedOnMe;
+        return this.steppedOnMe.size();
     }
 
-    public void setSteppedOnMe() {
-        this.steppedOnMe = this.getSteppedOnMe() +1;
+    public void setSteppedOnMe(ConcretePiece piece) {
+        if (!this.steppedOnMe.contains(piece)) {
+            this.steppedOnMe.add(piece);
+        }
+    }
+}
+class PositionTakenCompare implements Comparator<Position> { //compare the distance of 2 pieces
+    public int compare(Position c1, Position c2) {
+        if (c1.getSteppedOnMe() < c2.getSteppedOnMe()) return -1;
+        if (c1.getSteppedOnMe() > c2.getSteppedOnMe()) return 1;
+        else return 0;
     }
 }
 
-class PositionTakenCompare implements Comparator<Position> { //compare the distance of 2 pieces
+class xCompare implements Comparator<Position> {
     public int compare (Position c1, Position c2){
-        if(c1.getSteppedOnMe()< c2.getSteppedOnMe()) return -1;
-        if(c1.getSteppedOnMe()> c2.getSteppedOnMe()) return 1;
+        if(c1.getX() < c2.getX()) return -1;
+        if(c1.getX() > c2.getX()) return 1;
+        else return 0;
+    }
+}
+
+class yCompare implements Comparator<Position> {
+    public int compare (Position c1, Position c2){
+        if(c1.getX() < c2.getX()) return -1;
+        if(c1.getX() > c2.getX()) return 1;
         else return 0;
     }
 }

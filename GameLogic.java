@@ -237,7 +237,8 @@ public  class GameLogic implements PlayableLogic {
 
         grid[by][bx].setPos(new Position(bx,by));   //add the new position to the current piece moving list
 
-        b.setSteppedOnMe();    //add the number of steps the Piece stepped to the total
+        steppedOn[by][bx].setSteppedOnMe(grid[by][bx]);    //add the number of steps the Piece stepped to the total
+
 
 //
 //        printing tests:
@@ -286,7 +287,7 @@ public  class GameLogic implements PlayableLogic {
             if (numOfReds == 0) {
                 player1.setWins(); //set the number of wins on player 1 ++
                 winner = 1;
-                printSteps();
+                printAllStuff();
 
                 return true;
             }   //if player2 ran out of Pawns == player 1(blue) wins
@@ -299,7 +300,7 @@ public  class GameLogic implements PlayableLogic {
                         grid[yKing + 1][xKing].owner == player2 && grid[yKing - 1][xKing].owner == player2) {
                     player2.setWins(); //set the number of wins on player 2 ++
                     winner = 2;
-                    printSteps();
+                    printAllStuff();
                     return true; //player 2 (red) wins
                 }
             }
@@ -311,7 +312,7 @@ public  class GameLogic implements PlayableLogic {
                             grid[yKing - 1][xKing].owner == player2) {
                         player2.setWins(); //set the number of wins on player 2 ++
                         winner = 2;
-                        printSteps();
+                        printAllStuff();
                         return true; //player 2 (red) wins
                     }
                 }
@@ -323,7 +324,7 @@ public  class GameLogic implements PlayableLogic {
                             grid[yKing + 1][xKing].owner == player2) {
                         player2.setWins(); //set the number of wins on player 2 ++
                         winner = 2;
-                        printSteps();
+                        printAllStuff();
                         return true; //player 2 (red) wins
                     }
                 }
@@ -334,7 +335,7 @@ public  class GameLogic implements PlayableLogic {
                             grid[yKing - 1][xKing].owner == player2) {
                         player2.setWins(); //set the number of wins on player 2 ++
                         winner = 2;
-                        printSteps();
+                        printAllStuff();
                         return true; //player 2 (red) wins
                     }
                 }
@@ -345,7 +346,7 @@ public  class GameLogic implements PlayableLogic {
                             grid[yKing - 1][xKing].owner == player2) {
                         player2.setWins(); //set the number of wins on player 2 ++
                         winner = 2;     //the winner is Player2 (pint his data first)
-                        printSteps();
+                        printAllStuff();
                         return true; //player 2 (red) wins
                     }
                 }
@@ -357,7 +358,7 @@ public  class GameLogic implements PlayableLogic {
         if(grid[0][0] instanceof King || grid[0][10] instanceof King ||grid[10][0] instanceof King || grid[10][10] instanceof King ){
             player1.setWins(); //set the number of wins on player 1 ++
             winner =1;  //the winner is Player1 (Print his data first)
-            printSteps();
+            printAllStuff();
             return true; //player 1 (blue) wins
         }
 
@@ -380,6 +381,7 @@ public  class GameLogic implements PlayableLogic {
         int k=0;
         isPlayer2Turn = true;
 
+        //initiate the board with pieces
         for (int i = 0; i <= 10; i++) {
             for (int j = 0; j <= 10; j++) {
                 grid[j][i] = null;
@@ -435,16 +437,18 @@ public  class GameLogic implements PlayableLogic {
         grid[5][5] = new King(player1);
         grid[5][5].setPos(new Position(5,5));
 
+        //set the position matrix and count the pieces that starting on each position
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 steppedOn[j][i] = new Position(i,j);
                 if (grid[j][i] != null){
-                    steppedOn[j][i].setSteppedOnMe();
+                    steppedOn[j][i].setSteppedOnMe(grid[j][i]);
                 }
             }
 
         }
 
+        //initiate the List of all the pieces
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if (grid[j][i] != null){
@@ -453,6 +457,7 @@ public  class GameLogic implements PlayableLogic {
             }
         }
 
+        //initiate the List of all the Pawns without the King
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if (grid[j][i] != null && grid[j][i] instanceof Pawn){
@@ -463,7 +468,7 @@ public  class GameLogic implements PlayableLogic {
 
 
 
-        setNames();
+        setNames(); //call for the function that gives each pieces its name
     }
 
     @Override
@@ -540,10 +545,6 @@ public  class GameLogic implements PlayableLogic {
          for(ConcretePiece i : allPieces){
              if (i.getMap().size() > 1){ System.out.println(i.getName() + ": " + i.getMap());}
          }
-////////////////////////////
-        printKilles();
-        printDistance();
-         //////////////////////////
     }
 
     /**
@@ -576,6 +577,38 @@ public  class GameLogic implements PlayableLogic {
                 System.out.println(i.getName() + ": " + i.getDistance() + " squares");
             }
         }
+    }
+
+    public void printPositionsThatHaveBeenStepped(){
+
+        ArrayList<Position> positionArrayList = new ArrayList<>();
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                positionArrayList.add(steppedOn[j][i]);
+
+            }
+
+        }
+
+        Comparator<Position> stappedXAndYComp = new PositionTakenCompare().thenComparing(new xCompare()).thenComparing(new yCompare());
+        Collections.sort(positionArrayList, stappedXAndYComp);
+
+        for (Position i : positionArrayList) {
+            if (i.getSteppedOnMe() > 1) {
+                System.out.println(i.toString() + i.getSteppedOnMe() + " pieces");
+            }
+        }
+
+    }
+    public void printAllStuff(){
+        printSteps();
+        System.out.println("***************************************************************************");
+        printKilles();
+        System.out.println("***************************************************************************");
+        printDistance();
+        System.out.println("***************************************************************************");
+        printPositionsThatHaveBeenStepped();
+        System.out.println("***************************************************************************");
     }
 
 }
