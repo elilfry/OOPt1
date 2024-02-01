@@ -556,7 +556,7 @@ public  class GameLogic implements PlayableLogic {
      */
     public void printKilles() {
 
-        Comparator<Pawn> killesAndNameComp = new KillesCompare().thenComparing(new NameCompare());
+        Comparator<Pawn> killesAndNameComp = new KillesCompare().thenComparing(new SerialNumberCompare()).thenComparing(new NameCompare());
         Collections.sort(onlyPawns, killesAndNameComp);
 
         for (Pawn i : onlyPawns) {
